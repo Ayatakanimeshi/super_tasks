@@ -1,0 +1,24 @@
+# Ruby / Rails
+*.rbc
+*.sassc
+*.log
+*.pid
+*.sqlite3
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/tmp
+/vendor/bundle
+/storage/*
+.byebug_history
+
+# Node
+node_modules/
+dist/
+*.env
+
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
