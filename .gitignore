@@ -1,18 +1,20 @@
-# Node
-super_tasks_frontend/node_modules
-super_tasks_frontend/dist
+# Node.js 関連
+super_tasks_frontend/node_modules/
+super_tasks_frontend/dist/
+super_tasks_frontend/.vite/
 
-# Rails
-super_tasks_backend/log/*
-super_tasks_backend/tmp/*
-super_tasks_backend/vendor/bundle
-super_tasks_backend/.bundle
+# Rails 関連
+super_tasks_backend/log/
+super_tasks_backend/tmp/
+super_tasks_backend/vendor/
+super_tasks_backend/.bundle/
 super_tasks_backend/db/*.sqlite3
-super_tasks_backend/storage/*
+super_tasks_backend/db/*.sqlite3-journal
+super_tasks_backend/storage/
 super_tasks_backend/.DS_Store
 
-# OS・IDE系
+# OS・IDE 関連
 .DS_Store
 *.swp
-.idea
-.vscode
+.idea/
+.vscode/
