@@ -18,3 +18,7 @@ super_tasks_backend/.DS_Store
 *.swp
 .idea/
 .vscode/
+
+# セキュリティ系
+super_tasks_backend/config/master.key
+super_tasks_backend/config/credentials.yml.enc
