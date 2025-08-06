@@ -1,24 +1,18 @@
-# Ruby / Rails
-*.rbc
-*.sassc
-*.log
-*.pid
-*.sqlite3
-/db/*.sqlite3
-/db/*.sqlite3-journal
-/tmp
-/vendor/bundle
-/storage/*
-.byebug_history
-
 # Node
-node_modules/
-dist/
-*.env
+super_tasks_frontend/node_modules
+super_tasks_frontend/dist
 
-# macOS
+# Rails
+super_tasks_backend/log/*
+super_tasks_backend/tmp/*
+super_tasks_backend/vendor/bundle
+super_tasks_backend/.bundle
+super_tasks_backend/db/*.sqlite3
+super_tasks_backend/storage/*
+super_tasks_backend/.DS_Store
+
+# OS・IDE系
 .DS_Store
-
-# IDEs
-.idea/
-.vscode/
+*.swp
+.idea
+.vscode
