@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  study_goal: one
+  hours: 1.5
+  study_date: 2025-08-07 23:42:53
+
+two:
+  user: two
+  study_goal: two
+  hours: 1.5
+  study_date: 2025-08-07 23:42:53

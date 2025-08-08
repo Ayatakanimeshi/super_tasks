@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  name: MyString
+  duration: 1
+  burned_calories: 1
+  performed_at: 2025-08-08 00:07:15
+
+two:
+  user: two
+  name: MyString
+  duration: 1
+  burned_calories: 1
+  performed_at: 2025-08-08 00:07:15

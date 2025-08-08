@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  meal_menu: one
+  amount: 1.5
+  meal_date: 2025-08-07 23:42:37
+
+two:
+  user: two
+  meal_menu: two
+  amount: 1.5
+  meal_date: 2025-08-07 23:42:37
