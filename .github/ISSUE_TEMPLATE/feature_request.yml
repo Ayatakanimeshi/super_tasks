@@ -1,41 +1,36 @@
-name: 💡 機能リクエスト
-description: 新機能のアイデアを提案する
-labels: ["enhancement"]
+name: Feature_request
+description: 新機能の追加や仕様変更
+labels: ["backend"]
 body:
-  - type: markdown
+  - type: input
+    id: summary
+    attributes: { label: 概要, placeholder: 何を実現するか？ }
+    validations: { required: true }
+  - type: textarea
+    id: background
+    attributes: { label: 背景/目的, placeholder: なぜ必要か？ビジネス/UX視点も }
+  - type: textarea
+    id: requirements
     attributes:
+      label: 受け入れ条件 (Acceptance Criteria)
       value: |
-        機能の提案ありがとうございます。以下の情報を記入してください。
-
+        - [ ] 条件1
+        - [ ] 条件2
+        - [ ] 条件3
   - type: textarea
-    id: problem
+    id: tasks
     attributes:
-      label: 関連する問題
-      description: この機能リクエストに関連する問題を説明してください
-      placeholder: 例）〜の操作が面倒です
-    validations:
-      required: true
-
-  - type: textarea
-    id: solution
+      label: タスク (WBS)
+      value: |
+        - [ ] 実装
+        - [ ] テスト
+        - [ ] ドキュメント更新
+  - type: dropdown
+    id: sp
     attributes:
-      label: 提案する解決策
-      description: 考えられる解決策を説明してください
-    validations:
-      required: true
-
-  - type: textarea
-    id: alternatives
-    attributes:
-      label: 代替案
-      description: 検討した他の解決策があれば記述してください
-    validations:
-      required: false
-
-  - type: textarea
-    id: additional
-    attributes:
-      label: その他の情報
-      description: スクリーンショットや参考資料などがあれば追加してください
-    validations:
-      required: false
+      label: ストーリーポイント
+      options: ["1", "2", "3", "5", "8"]
+    validations: { required: true }
+  - type: input
+    id: branch
+    attributes: { label: ブランチ名(案), placeholder: feature/#123-your-topic }
