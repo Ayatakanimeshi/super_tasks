@@ -1,4 +1,12 @@
+/* Tailwind CSSの基本スタイルをインポート */
+@tailwind base;
+/* Tailwind CSSのコンポーネントスタイルをインポート */
+@tailwind components;
+/* Tailwind CSSのユーティリティスタイルをインポート */
+@tailwind utilities;
+/* ルート要素の基本スタイル設定 */
 :root {
+  /* フォントファミリーの設定（システムフォント優先） */
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
