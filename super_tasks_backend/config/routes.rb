@@ -7,4 +7,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  namespace :api do
+    get    :csrf,        to: 'sessions#csrf'
+    post   :login,       to: 'sessions#create'
+    delete :logout,      to: 'session#destroy'
+    get    :me,          to: 'sessions#me'
+    get    :health_check, to: proc { [200, {}, [ { status: 'ok' }.to_json ]] }
+  end
 end
