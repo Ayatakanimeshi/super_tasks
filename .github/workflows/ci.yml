@@ -58,6 +58,7 @@ jobs:
         with:
           ruby-version: "3.2.2"
           bundler-cache: true
+          working-directory: super_tasks_backend
 
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y libpq-dev
