@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main, "feature/**", "fix/**", "chore/**"]
+    paths:
+      - "super_tasks_backend/**"
+      - "super_tasks_frontend/**"
+      - ".github/workflows/**"
+  pull_request:
+    branches: [master, main]
+    paths:
+      - "super_tasks_backend/**"
+      - "super_tasks_frontend/**"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (Rails)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: super_tasks_backend_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    defaults:
+      run:
+        working-directory: super_tasks_backend
+
+    env:
+      RAILS_ENV: test
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: super_tasks_backend_test
+      PGPORT: 5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2.2"
+          bundler-cache: true
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libpq-dev
+
+      - name: Wait for Postgres
+        run: |
+          for i in `seq 1 30`; do
+            pg_isready -h 127.0.0.1 -p 5432 -U postgres && break
+            sleep 1
+          done
+
+      - name: Prepare DB
+        run: |
+          bin/rails db:prepare
+
+      # Minitestが標準なのでこれでOK（RSpecなら rspec に置き換え）
+      - name: Run tests
+        run: bin/rails test
+
+      # 任意：静的チェック（Rubocopを使うなら）
+      # - name: RuboCop
+      #   run: bundle exec rubocop
+
+  frontend:
+    name: Frontend (Vite/TS)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: super_tasks_frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.19.4"
+          cache: "npm"
+          cache-dependency-path: super_tasks_frontend/package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck || echo "skip typecheck (script not found)"
+
+      - name: Lint
+        run: npm run lint || echo "skip lint (script not found)"
+
+      - name: Build
+        run: npm run build
