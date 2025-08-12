@@ -5,11 +5,11 @@ one:
   training_menu: one
   weight: 1.5
   reps: 1
-  training_date: 2025-08-07 23:42:26
+  performed_at: 2025-08-07 23:42:26
 
 two:
   user: two
   training_menu: two
   weight: 1.5
   reps: 1
-  training_date: 2025-08-07 23:42:26
+  performed_at: 2025-08-07 23:42:26
