@@ -1,15 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   user: one
   mentor_task: one
-  executed_at: 2025-08-07 23:43:02
-  deadline: 2025-08-07 23:43:02
+  executed_at: 2025-08-10 10:00:00
+  deadline: 2025-08-12 23:59:59
   completed: false
 
 two:
   user: two
   mentor_task: two
-  executed_at: 2025-08-07 23:43:02
-  deadline: 2025-08-07 23:43:02
-  completed: false
+  executed_at: 2025-08-11 09:00:00
+  deadline: 2025-08-13 23:59:59
+  completed: true
