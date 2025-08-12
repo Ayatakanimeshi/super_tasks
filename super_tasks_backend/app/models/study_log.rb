@@ -11,6 +11,6 @@ class StudyLog < ApplicationRecord
 
   def user_matches_goal
     return if study_goal.nil? || user.nil?
-    errors.add(:user, "ユーザーが一致しません。") if study_goal.user_id != user_id
+    errors.add(:user, "must match study_goal.user") if study_goal.user_id != user_id
   end
 end
