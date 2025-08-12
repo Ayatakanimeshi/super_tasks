@@ -1,15 +1,15 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  name: MyString
-  description: MyText
-  category: MyString
-  target_hours: 1
+  user: one
+  name: "Java Bronze 学習"
+  description: "公式テキストを完走"
+  category: "certification"
+  target_hours: 20
   completed: false
 
 two:
-  name: MyString
-  description: MyText
-  category: MyString
-  target_hours: 1
+  user: two
+  name: "Rails 実践"
+  description: "Active Recordの実装強化"
+  category: "web"
+  target_hours: 30
   completed: false
