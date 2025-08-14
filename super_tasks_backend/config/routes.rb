@@ -10,8 +10,9 @@ Rails.application.routes.draw do
   namespace :api do
     get    :csrf,        to: 'sessions#csrf'
     post   :login,       to: 'sessions#create'
-    delete :logout,      to: 'session#destroy'
+    delete :logout,      to: 'sessions#destroy'
     get    :me,          to: 'sessions#me'
+    post   :signup,      to: 'registrations#create'
     get    :health_check, to: proc { [200, {}, [ { status: 'ok' }.to_json ]] }
   end
 end

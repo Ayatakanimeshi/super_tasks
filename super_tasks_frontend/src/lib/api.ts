@@ -22,6 +22,32 @@ export async function bootstrapCsrf() {
   }
 }
 
+// 認証系API
+export async function register(payload: {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}) {
+  const res = await api.post("register", { user: payload });
+  return res.data;
+}
+
+export async function login(email: string, password: string) {
+  const res = await api.post("login", { email, password });
+  return res.data;
+}
+
+export async function logout() {
+  const res = await api.delete("logout");
+  return res.data;
+}
+
+export async function me() {
+  const res = await api.get("me");
+  return res.data;
+}
+
 // レスポンスインターセプターを設定
 api.interceptors.response.use(
   (res) => res, // 成功時はそのままレスポンスを返す

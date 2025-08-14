@@ -1,7 +1,6 @@
 class Api::SessionsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create], if: -> { request.format.json? && !cookies['CSRF-TOKEN'] }
-  # ↑ 初回にCSRF Cookieがまだ無い時の救済（必要なければ外してOK）
-
+  skip_before_action :require_login, only: %i[create csrf me]
+  
   def csrf
     render json: { csrfToken: form_authenticity_token }
   end
