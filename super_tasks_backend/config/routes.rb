@@ -16,5 +16,7 @@ Rails.application.routes.draw do
     get    :health_check, to: proc { [200, {}, [ { status: 'ok' }.to_json ]] }
     resources :training_menus
     resources :training_logs, only: %i[index create update destroy]
+    resources :meal_menus
+    resources :meal_logs, only: %i[index create update destroy]
   end
 end
