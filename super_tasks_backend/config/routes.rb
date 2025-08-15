@@ -20,5 +20,7 @@ Rails.application.routes.draw do
     resources :meal_logs, only: %i[index create update destroy]
     resources :study_goals
     resources :study_logs, only: %i[index create update destroy]
+    resources :mentor_tasks
+    resources :mentor_task_logs, only: %i[index create update destroy]
   end
 end
