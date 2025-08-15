@@ -1,14 +1,11 @@
-// Axiosライブラリをインポート
 import axios from "axios";
 
-// APIのベースURLを定義
-const BASE_URL = "/api";
+const BASE_URL = "/api"; // 開発時は Vite の devServer で /api にプロキシ or 同一オリジン
 
-// Axiosインスタンスを作成し、共通設定を適用
 export const api = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // クッキーを含むリクエストを許可
-  timeout: 10000, // 10秒でタイムアウト
+  withCredentials: true,
+  timeout: 10000,
 });
 
 // 起動時に一度CSRFトークンを取得して、以降の書き込み系で送る
@@ -22,14 +19,14 @@ export async function bootstrapCsrf() {
   }
 }
 
-// 認証系API
+// 認証系API（/signup に合わせて修正）
 export async function register(payload: {
   name: string;
   email: string;
   password: string;
   password_confirmation: string;
 }) {
-  const res = await api.post("register", { user: payload });
+  const res = await api.post("signup", { user: payload });
   return res.data;
 }
 
@@ -48,13 +45,16 @@ export async function me() {
   return res.data;
 }
 
-// レスポンスインターセプターを設定
+// 401 のときに /login へ（無限ループを避けるため、現在位置が /login /signup なら何もしない）
 api.interceptors.response.use(
-  (res) => res, // 成功時はそのままレスポンスを返す
+  (res) => res,
   (error) => {
-    // 401エラー（認証エラー）の場合はログインページにリダイレクト
-    if (error.response.status === 401) {
-      window.location.href = "/login";
+    const status = error?.response?.status;
+    if (status === 401) {
+      const path = window.location.pathname;
+      if (path !== "/login" && path !== "/signup") {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }
