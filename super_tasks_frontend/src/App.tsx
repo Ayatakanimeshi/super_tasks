@@ -7,6 +7,10 @@ import TrainingLogsPage from "./pages/training/TrainingLogsPage";
 import TrainingLogDetail from "./pages/training/TrainingLogDetail";
 import TrainingMenusPage from "./pages/training/TrainingMenusPage";
 import TrainingMenuDetail from "./pages/training/TrainingMenuDetail";
+import StudyLogsPage from "./pages/study/StudyLogsPage";
+import StudyLogDetail from "./pages/study/StudyLogDetail";
+import StudyGoalsPage from "./pages/study/StudyGoalsPage";
+import StudyGoalDetail from "./pages/study/StudyGoalDetail";
 
 export default function App() {
   return (
@@ -76,10 +80,35 @@ export default function App() {
           path="/study"
           element={
             <ProtectedRoute>
-              <div className="p-6">Study（準備中）</div>
+              <StudyLogsPage />
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/study/logs/:id"
+          element={
+            <ProtectedRoute>
+              <StudyLogDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/study/goals"
+          element={
+            <ProtectedRoute>
+              <StudyGoalsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/study/goals/:id"
+          element={
+            <ProtectedRoute>
+              <StudyGoalDetail />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/mentor"
           element={
