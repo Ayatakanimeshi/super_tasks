@@ -3,6 +3,10 @@ import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
+import TrainingLogsPage from "./pages/training/TrainingLogsPage";
+import TrainingLogDetail from "./pages/training/TrainingLogDetail";
+import TrainingMenusPage from "./pages/training/TrainingMenusPage";
+import TrainingMenuDetail from "./pages/training/TrainingMenuDetail";
 
 export default function App() {
   return (
@@ -26,15 +30,40 @@ export default function App() {
           }
         />
 
-        {/* 以降の機能ページは実装時にProtectedRouteで包む */}
+        {/* トレーニング管理 */}
         <Route
           path="/training"
           element={
             <ProtectedRoute>
-              <div className="p-6">Training（準備中）</div>
+              <TrainingLogsPage />
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/training/logs/:id"
+          element={
+            <ProtectedRoute>
+              <TrainingLogDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/training/menus"
+          element={
+            <ProtectedRoute>
+              <TrainingMenusPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/training/menus/:id"
+          element={
+            <ProtectedRoute>
+              <TrainingMenuDetail />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/meals"
           element={
