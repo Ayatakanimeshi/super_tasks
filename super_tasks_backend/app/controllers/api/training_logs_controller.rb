@@ -12,7 +12,16 @@ class Api::TrainingLogsController < ApplicationController
       logs = logs.where('performed_at <= ?', to)
     end
 
+    if params[:training_menu_id].present?
+      logs = logs.where(training_menu_id: params[:training_menu_id])
+    end
+
     render json: logs.order(performed_at: :desc, created_at: :desc)
+  end
+  
+  def show
+    log = current_user.training_logs.find(params[:id])
+    render json: log
   end
 
   def create

@@ -5,20 +5,21 @@ import { trainingApi } from "../../features/training/trainingApi";
 
 export default function TrainingLogDetail() {
   const { id } = useParams();
-  const logsQ = useQuery({
-    queryKey: ["training_logs"],
-    queryFn: () => trainingApi.listLogs({}),
+  const logQ = useQuery({
+    queryKey: ["training_log", id],
+    queryFn: () => trainingApi.getLog(Number(id)),
+    enabled: !!id,
   });
   const menusQ = useQuery({
     queryKey: ["training_menus"],
     queryFn: trainingApi.listMenus,
   });
-  const log = logsQ.data?.find((l) => String(l.id) === id);
-  const menu = menusQ.data?.find((m) => m.id === log?.training_menu_id);
 
-  if (logsQ.isLoading || menusQ.isLoading)
+  if (logQ.isLoading || menusQ.isLoading)
     return <div className="p-6">Loading...</div>;
+  const log = logQ.data;
   if (!log) return <div className="p-6">Not Found</div>;
+  const menu = menusQ.data?.find((m) => m.id === log.training_menu_id);
 
   return (
     <div className="p-6 space-y-4">
