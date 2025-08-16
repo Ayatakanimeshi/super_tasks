@@ -41,6 +41,10 @@ export const trainingApi = {
     to?: string;
   }): Promise<TrainingLog[]> =>
     (await api.get("/training_logs", { params })).data,
+
+  getLog: async (id: number): Promise<TrainingLog> =>
+    (await api.get(`/training_logs/${id}`)).data,
+
   // 個別取得APIが未定義のため、当面は list を用いてクライアント側で抽出
   createLog: async (
     payload: Pick<
@@ -69,3 +73,4 @@ export const trainingApi = {
   deleteLog: async (id: number) =>
     (await api.delete(`/training_logs/${id}`)).data,
 };
+[];

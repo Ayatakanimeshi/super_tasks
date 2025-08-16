@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     post   :signup,      to: 'registrations#create'
     get    :health_check, to: proc { [200, {}, [ { status: 'ok' }.to_json ]] }
     resources :training_menus
-    resources :training_logs, only: %i[index create update destroy]
+    resources :training_logs, only: %i[index show create update destroy]
     resources :meal_menus
     resources :meal_logs, only: %i[index create update destroy]
     resources :study_goals

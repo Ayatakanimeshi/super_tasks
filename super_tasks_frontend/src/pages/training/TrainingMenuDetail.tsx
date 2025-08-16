@@ -9,9 +9,11 @@ export default function TrainingMenuDetail() {
     queryKey: ["training_menu", id],
     queryFn: () => trainingApi.getMenu(Number(id)),
   });
+
   const logsQ = useQuery({
     queryKey: ["training_logs_by_menu", id],
-    queryFn: () => trainingApi.listLogs({}),
+    queryFn: () => trainingApi.listLogs(),
+    enabled: !!id,
   });
 
   const logs = logsQ.data?.filter((l) => String(l.training_menu_id) === id);
