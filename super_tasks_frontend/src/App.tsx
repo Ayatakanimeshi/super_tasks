@@ -11,6 +11,10 @@ import StudyLogsPage from "./pages/study/StudyLogsPage";
 import StudyLogDetail from "./pages/study/StudyLogDetail";
 import StudyGoalsPage from "./pages/study/StudyGoalsPage";
 import StudyGoalDetail from "./pages/study/StudyGoalDetail";
+import MealLogsPage from "./pages/meal/MealLogsPage";
+import MealLogDetail from "./pages/meal/MealLogDetail";
+import MealMenusPage from "./pages/meal/MealMenusPage";
+import MealMenuDetail from "./pages/meal/MealMenuDetail";
 
 export default function App() {
   return (
@@ -72,10 +76,35 @@ export default function App() {
           path="/meals"
           element={
             <ProtectedRoute>
-              <div className="p-6">Meals（準備中）</div>
+              <MealLogsPage />
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/meals/logs/:id"
+          element={
+            <ProtectedRoute>
+              <MealLogDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/meals/menus"
+          element={
+            <ProtectedRoute>
+              <MealMenusPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/meals/menus/:id"
+          element={
+            <ProtectedRoute>
+              <MealMenuDetail />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/study"
           element={
