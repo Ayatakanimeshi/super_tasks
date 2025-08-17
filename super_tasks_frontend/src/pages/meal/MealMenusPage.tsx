@@ -47,7 +47,7 @@ export default function MealMenusPage() {
       <section className="space-y-3">
         <h2 className="font-semibold">新規メニュー</h2>
         <form
-          className="grid md:grid-cols-4 gap-3 items-end"
+          className="grid grid-cols-1 gap-3"
           onSubmit={(e) => {
             e.preventDefault();
             createMenu.mutate();
