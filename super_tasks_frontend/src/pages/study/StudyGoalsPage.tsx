@@ -70,7 +70,7 @@ export default function StudyGoalsPage() {
       <section className="space-y-3">
         <h2 className="font-semibold">新規目標</h2>
         <form
-          className="grid md:grid-cols-5 gap-3 items-end"
+          className="grid grid-cols-1 gap-3"
           onSubmit={(e) => {
             e.preventDefault();
             createGoal.mutate();
@@ -105,7 +105,7 @@ export default function StudyGoalsPage() {
               }
             />
           </div>
-          <div className="md:col-span-2">
+          <div>
             <label className="block text-sm">説明</label>
             <input
               className="border rounded p-2 w-full"

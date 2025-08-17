@@ -20,10 +20,16 @@ import MentorCalendarPage from "./pages/mentor/MentorCalendarPage";
 export default function App() {
   return (
     <div className="min-h-screen p-6 space-y-6">
-      <nav className="flex gap-4">
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Signup</Link>
+      <nav className="flex flex-wrap gap-2 text-sm">
+        <Link to="/dashboard" className="px-2 py-1 border rounded">
+          Dashboard
+        </Link>
+        <Link to="/login" className="px-2 py-1 border rounded">
+          Login
+        </Link>
+        <Link to="/signup" className="px-2 py-1 border rounded">
+          Signup
+        </Link>
       </nav>
 
       <Routes>

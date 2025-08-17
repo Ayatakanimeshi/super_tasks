@@ -113,7 +113,7 @@ export default function Dashboard() {
       </div>
 
       {/* 概況カード */}
-      <div className="grid md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         <StatCard
           label="今日のトレーニング回数"
           value={logsQ.isLoading ? <Spinner /> : todayTrainingCount}
@@ -147,7 +147,7 @@ export default function Dashboard() {
       </div>
 
       {/* 最近の項目（各3件） */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <Section
           title="最近のトレーニング"
           actions={
@@ -246,7 +246,7 @@ export default function Dashboard() {
         onClose={() => setOpenQuick(false)}
         title="クイックアクション"
       >
-        <div className="grid md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3">
           <a href="/training" className="border rounded p-3 hover:bg-gray-50">
             ＋ トレーニングログを追加
           </a>
