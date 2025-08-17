@@ -15,6 +15,7 @@ import MealLogsPage from "./pages/meal/MealLogsPage";
 import MealLogDetail from "./pages/meal/MealLogDetail";
 import MealMenusPage from "./pages/meal/MealMenusPage";
 import MealMenuDetail from "./pages/meal/MealMenuDetail";
+import MentorCalendarPage from "./pages/mentor/MentorCalendarPage";
 
 export default function App() {
   return (
@@ -142,7 +143,7 @@ export default function App() {
           path="/mentor"
           element={
             <ProtectedRoute>
-              <div className="p-6">Mentor（準備中）</div>
+              <MentorCalendarPage />
             </ProtectedRoute>
           }
         />
