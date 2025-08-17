@@ -2,14 +2,14 @@ class Api::MentorTaskLogsController < ApplicationController
   def index
     logs = current_user.mentor_task_logs.includes(:mentor_task)
 
-    # 期間フィルタ（executed_at）
+    # 期間フィルタ（deadline）
     if params[:from].present?
       from = Date.parse(params[:from]).beginning_of_day
-      logs = logs.where('executed_at >= ?', from)
+      logs = logs.where('deadline >= ?', from)
     end
     if params[:to].present?
       to = Date.parse(params[:to]).end_of_day
-      logs = logs.where('executed_at <= ?', to)
+      logs = logs.where('deadline <= ?', to)
     end
 
     # ステータス絞り込み
@@ -25,7 +25,7 @@ class Api::MentorTaskLogsController < ApplicationController
       logs = logs.where(completed: false).where('deadline IS NOT NULL AND deadline < ?', Time.current)
     end
 
-    results = logs.order(executed_at: :desc, created_at: :desc).map { |log|
+    results = logs.order(deadline: :asc, created_at: :desc).map { |log|
       log.as_json.merge(
         'overdue' => (!log.completed && log.deadline.present? && log.deadline < Time.current)
       )
