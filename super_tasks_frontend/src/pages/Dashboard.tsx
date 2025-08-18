@@ -4,7 +4,6 @@ import StatCard from "../components/common/StatCard";
 import Spinner from "../components/common/Spinner";
 import Empty from "../components/common/Empty";
 import ErrorMessage from "../components/common/ErrorMessage";
-import Modal from "../components/common/Modal";
 import { useQuery } from "@tanstack/react-query";
 import { trainingApi } from "../features/training/trainingApi";
 import { studyApi } from "../features/study/studyApi";
@@ -17,7 +16,7 @@ function ymd(d: Date) {
 const todayISO = ymd(new Date());
 
 export default function Dashboard() {
-  // === fetch: 直近7日で取得（UI体感が良い）
+  // 直近7日レンジ
   const [range] = useState(() => {
     const to = new Date();
     const from = new Date();
@@ -25,6 +24,7 @@ export default function Dashboard() {
     return { from: from.toISOString(), to: to.toISOString() };
   });
 
+  // fetch
   const menusQ = useQuery({
     queryKey: ["training_menus"],
     queryFn: trainingApi.listMenus,
@@ -61,7 +61,7 @@ export default function Dashboard() {
     queryFn: () => mentorApi.listLogs({ from: range.from, to: range.to }),
   });
 
-  // === 集計（今日）
+  // 集計（今日）
   const todayTrainingCount = useMemo(
     () =>
       (logsQ.data ?? []).filter(
@@ -69,8 +69,8 @@ export default function Dashboard() {
       ).length,
     [logsQ.data]
   );
+
   const todayCalories = useMemo(() => {
-    // meal_logs: amount * menu.calories を合算（amountが未使用の設計なら menu.calories を加算）
     const byId = new Map((mealMenusQ.data ?? []).map((m) => [m.id, m]));
     return (mealLogsQ.data ?? [])
       .filter((l) => l.meal_date?.slice(0, 10) === todayISO)
@@ -84,10 +84,9 @@ export default function Dashboard() {
   }, [mealLogsQ.data, mealMenusQ.data]);
 
   const todayStudyHours = useMemo(() => {
-    const hours = (studyLogsQ.data ?? [])
+    return (studyLogsQ.data ?? [])
       .filter((l) => l.study_date?.slice(0, 10) === todayISO)
       .reduce((sum, l) => sum + (l.hours ?? 0), 0);
-    return hours; // h単位
   }, [studyLogsQ.data]);
 
   const overdueMentorCount = useMemo(() => {
@@ -97,27 +96,45 @@ export default function Dashboard() {
     ).length;
   }, [mentorLogsQ.data]);
 
-  // === クイックアクション（簡易モーダルの例：今はリンク中心に）
-  const [openQuick, setOpenQuick] = useState(false);
+  // 表示ラベル
+  const rangeLabel = useMemo(() => {
+    const f = new Date(range.from);
+    const t = new Date(range.to);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${f.getFullYear()}/${pad(f.getMonth() + 1)}/${pad(
+      f.getDate()
+    )} - ${t.getFullYear()}/${pad(t.getMonth() + 1)}/${pad(t.getDate())}`;
+  }, [range.from, range.to]);
+
+  // 最近
+  const recentTrainings = useMemo(
+    () => (logsQ.data ?? []).slice(-3).reverse(),
+    [logsQ.data]
+  );
+  const dueSoonMentor = useMemo(() => {
+    return (mentorLogsQ.data ?? [])
+      .filter((l) => !l.completed && l.deadline)
+      .sort(
+        (a, b) =>
+          new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime()
+      )
+      .slice(0, 5);
+  }, [mentorLogsQ.data]);
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">ダッシュボード</h1>
-        <button
-          className="px-4 py-2 rounded bg-black text-white"
-          onClick={() => setOpenQuick(true)}
-        >
-          ＋ クイックアクション
-        </button>
+    <div className="mx-auto max-w-5xl px-4 py-6 space-y-6">
+      {/* タイトルだけ（ヘッダーやクイックモーダルは App.tsx 側で制御） */}
+      <div className="flex items-end justify-between">
+        <h1 className="text-2xl font-extrabold tracking-tight text-white">
+          本日の記録
+        </h1>
       </div>
 
-      {/* 概況カード */}
-      <div className="grid grid-cols-2 gap-3">
+      {/* 概況カード（スマホ2列） */}
+      <section className="grid grid-cols-2 gap-3 sm:gap-4">
         <StatCard
           label="今日のトレーニング回数"
           value={logsQ.isLoading ? <Spinner /> : todayTrainingCount}
-          hint="直近7日のログから集計"
           onClick={() => (window.location.href = "/training")}
         />
         <StatCard
@@ -129,29 +146,29 @@ export default function Dashboard() {
               `${Math.round(todayCalories)} kcal`
             )
           }
-          hint="直近7日の食事ログから集計"
           onClick={() => (window.location.href = "/meals")}
         />
         <StatCard
           label="今日の学習時間"
           value={studyLogsQ.isLoading ? <Spinner /> : `${todayStudyHours} h`}
-          hint="直近7日の学習ログから集計"
           onClick={() => (window.location.href = "/study")}
         />
         <StatCard
           label="期限超過タスク"
           value={mentorLogsQ.isLoading ? <Spinner /> : overdueMentorCount}
-          hint="メンター業務（未完 & 期限切れ）"
           onClick={() => (window.location.href = "/mentor")}
         />
-      </div>
+      </section>
 
       {/* 最近の項目（各3件） */}
-      <div className="grid grid-cols-1 gap-4">
+      <section className="grid grid-cols-1 gap-4">
         <Section
           title="最近のトレーニング"
           actions={
-            <a className="underline" href="/training">
+            <a
+              className="text-blue-400 hover:text-blue-300 underline"
+              href="/training"
+            >
               すべて見る
             </a>
           }
@@ -160,36 +177,38 @@ export default function Dashboard() {
             <ErrorMessage />
           ) : logsQ.isLoading ? (
             <Spinner />
+          ) : (logsQ.data ?? []).slice(-3).reverse().length === 0 ? (
+            <Empty />
           ) : (
-            (logsQ.data ?? [])
-              .slice(-3)
-              .reverse()
-              .map((l) => {
-                const menu = (menusQ.data ?? []).find(
-                  (m) => m.id === l.training_menu_id
-                );
-                return (
-                  <a
-                    key={l.id}
-                    href={`/training/logs/${l.id}`}
-                    className="block border rounded p-3 hover:bg-gray-50"
-                  >
-                    <div className="text-sm opacity-70">
-                      {new Date(l.performed_at).toLocaleString()}
-                    </div>
-                    <div className="font-medium">
-                      {menu?.name ?? "種目"} — {l.weight}kg × {l.reps}回
-                    </div>
-                  </a>
-                );
-              }) || <Empty />
+            recentTrainings.map((l) => {
+              const menu = (menusQ.data ?? []).find(
+                (m) => m.id === l.training_menu_id
+              );
+              return (
+                <a
+                  key={l.id}
+                  href={`/training/logs/${l.id}`}
+                  className="block rounded border border-gray-800 bg-gray-800 p-3 hover:bg-gray-700"
+                >
+                  <div className="text-sm text-gray-400">
+                    {new Date(l.performed_at).toLocaleString()}
+                  </div>
+                  <div className="font-medium text-white">
+                    {menu?.name ?? "種目"} — {l.weight}kg × {l.reps}回
+                  </div>
+                </a>
+              );
+            })
           )}
         </Section>
 
         <Section
           title="期限が近いメンタータスク"
           actions={
-            <a className="underline" href="/mentor">
+            <a
+              className="text-blue-400 hover:text-blue-300 underline"
+              href="/mentor"
+            >
               カレンダーへ
             </a>
           }
@@ -198,69 +217,39 @@ export default function Dashboard() {
             <ErrorMessage />
           ) : mentorLogsQ.isLoading ? (
             <Spinner />
+          ) : dueSoonMentor.length === 0 ? (
+            <Empty />
           ) : (
-            (mentorLogsQ.data ?? [])
-              .filter((l) => !l.completed && l.deadline)
-              .sort(
-                (a, b) =>
-                  new Date(a.deadline!).getTime() -
-                  new Date(b.deadline!).getTime()
-              )
-              .slice(0, 5)
-              .map((l) => {
-                const t = (mentorTasksQ.data ?? []).find(
-                  (x) => x.id === l.mentor_task_id
-                );
-                return (
-                  <div
-                    key={l.id}
-                    className="border rounded p-3 flex items-center justify-between"
-                  >
-                    <div>
-                      <div className="font-medium">{t?.name ?? "タスク"}</div>
-                      <div className="text-xs opacity-70">
-                        期限:{" "}
-                        {l.deadline
-                          ? new Date(l.deadline).toLocaleString()
-                          : "-"}
-                      </div>
+            dueSoonMentor.map((l) => {
+              const t = (mentorTasksQ.data ?? []).find(
+                (x) => x.id === l.mentor_task_id
+              );
+              return (
+                <div
+                  key={l.id}
+                  className="rounded border border-gray-800 bg-gray-800 p-3 flex items-center justify-between"
+                >
+                  <div>
+                    <div className="font-medium text-white">
+                      {t?.name ?? "タスク"}
                     </div>
-                    <a className="underline text-sm" href="/mentor">
-                      開く
-                    </a>
+                    <div className="text-xs text-gray-400">
+                      期限:{" "}
+                      {l.deadline ? new Date(l.deadline).toLocaleString() : "-"}
+                    </div>
                   </div>
-                );
-              })
-              .concat(
-                (mentorLogsQ.data ?? []).filter((l) => !l.completed).length ===
-                  0
-                  ? [<Empty key="empty" />]
-                  : []
-              )
+                  <a
+                    className="text-blue-400 hover:text-blue-300 text-sm underline"
+                    href="/mentor"
+                  >
+                    開く
+                  </a>
+                </div>
+              );
+            })
           )}
         </Section>
-      </div>
-
-      <Modal
-        open={openQuick}
-        onClose={() => setOpenQuick(false)}
-        title="クイックアクション"
-      >
-        <div className="grid grid-cols-1 gap-3">
-          <a href="/training" className="border rounded p-3 hover:bg-gray-50">
-            ＋ トレーニングログを追加
-          </a>
-          <a href="/meals" className="border rounded p-3 hover:bg-gray-50">
-            ＋ 食事ログを追加
-          </a>
-          <a href="/study" className="border rounded p-3 hover:bg-gray-50">
-            ＋ 学習ログ/目標を追加
-          </a>
-          <a href="/mentor" className="border rounded p-3 hover:bg-gray-50">
-            ＋ メンタータスクを追加
-          </a>
-        </div>
-      </Modal>
+      </section>
     </div>
   );
 }
