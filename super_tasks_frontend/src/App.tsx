@@ -49,46 +49,160 @@ export default function App() {
 
           {/* 右：ナビ＋クイックアクション */}
           <div className="flex items-center gap-3">
-            <nav className="hidden sm:flex items-center gap-4 text-sm">
-              <Link to="/" className="text-gray-300 hover:text-white">
+            {/* ナビ：モバイルでも表示される簡易版（text-xs） */}
+            <nav className="flex items-center gap-3 text-sm">
+              <Link
+                to="/"
+                className="text-gray-300 hover:text-white hidden sm:inline"
+              >
                 トップ
               </Link>
               {!user ? (
-                <>
-                  <Link to="/login" className="text-gray-300 hover:text-white">
-                    ログイン
+                <div className="flex items-center gap-2">
+                  {/* ログイン */}
+                  <Link
+                    to="/login"
+                    aria-label="ログイン"
+                    title="ログイン"
+                    className="h-9 w-9 grid place-items-center rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 block"
+                      fill="none"
+                    >
+                      <path
+                        d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M10 17l5-5-5-5"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M15 12H3"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </Link>
-                  <Link to="/signup" className="text-gray-300 hover:text-white">
-                    ユーザー登録
+                  {/* ユーザー登録 */}
+                  <Link
+                    to="/signup"
+                    aria-label="ユーザー登録"
+                    title="ユーザー登録"
+                    className="h-9 w-9 grid place-items-center rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 block"
+                      fill="none"
+                    >
+                      <path
+                        d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M20 21a8 8 0 0 0-16 0"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M19 8v6"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M16 11h6"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </Link>
-                </>
+                </div>
               ) : (
-                <button
-                  onClick={signOut}
-                  className="text-gray-300 hover:text-white"
-                  title="ログアウト"
-                >
-                  ログアウト
-                </button>
+                <div className="flex items-center gap-2">
+                  {/* （任意）ユーザー丸アイコン */}
+                  <div className="hidden sm:grid place-items-center h-9 w-9 rounded-full bg-gray-700 text-white text-xs font-bold">
+                    {user.email?.[0]?.toUpperCase() ?? "U"}
+                  </div>
+                  {/* ログアウト */}
+                  <button
+                    aria-label="ログアウト"
+                    title="ログアウト"
+                    onClick={signOut}
+                    className="h-9 w-9 grid place-items-center rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60 flex items-center justify-center leading-none"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 block"
+                      fill="none"
+                    >
+                      <path
+                        d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M16 17l5-5-5-5"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M21 12H9"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
               )}
             </nav>
 
-            {/* クイックアクション（右上の丸アイコン） */}
+            {/* クイックアクション（サイズ/アイコン調整） */}
             <button
-              aria-label="クイックアクション"
-              title="クイックアクション"
+              aria-label="どの記録を登録しますか？"
+              title="どの記録を登録しますか？"
               onClick={() => setOpenQuick(true)}
-              className="h-9 w-9 rounded-full bg-gray-800 border border-gray-700 grid place-items-center hover:bg-gray-700 active:opacity-80"
+              className="h-10 w-10 rounded-full bg-gray-800 border border-gray-700 grid place-items-center hover:bg-gray-700 active:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60 flex items-center justify-center leading-none"
             >
-              {/* 稲妻アイコン */}
+              {/* 稲妻アイコン：stroke系で視認性UP・サイズ揃え */}
               <svg
-                width="16"
-                height="16"
+                className="h-5 w-5 text-white"
                 viewBox="0 0 24 24"
-                fill="currentColor"
-                className="text-white"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <path d="M13 3L4 14h6l-1 7 9-11h-6l1-7z" />
+                <path
+                  d="M13 3L4 14h6l-1 7 9-11h-6l1-7z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           </div>
