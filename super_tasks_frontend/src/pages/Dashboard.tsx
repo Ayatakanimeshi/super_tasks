@@ -89,11 +89,14 @@ export default function Dashboard() {
       .reduce((sum, l) => sum + (l.hours ?? 0), 0);
   }, [studyLogsQ.data]);
 
-  const overdueMentorCount = useMemo(() => {
-    const now = new Date().toISOString();
-    return (mentorLogsQ.data ?? []).filter(
-      (l) => !l.completed && l.deadline && l.deadline < now
-    ).length;
+  // 置換: 期限超過ではなく「今日が期限」
+  const todayDueMentorCount = useMemo(() => {
+    return (mentorLogsQ.data ?? []).filter((l) => {
+      if (l.completed) return false;
+      if (!l.deadline) return false;
+      const due = l.deadline.slice(0, 10);
+      return due === todayISO; // 今日が期限
+    }).length;
   }, [mentorLogsQ.data]);
 
   // 表示ラベル
@@ -154,8 +157,8 @@ export default function Dashboard() {
           onClick={() => (window.location.href = "/study")}
         />
         <StatCard
-          label="期限超過タスク"
-          value={mentorLogsQ.isLoading ? <Spinner /> : overdueMentorCount}
+          label="今日が期限のタスク"
+          value={mentorLogsQ.isLoading ? <Spinner /> : todayDueMentorCount}
           onClick={() => (window.location.href = "/mentor")}
         />
       </section>
