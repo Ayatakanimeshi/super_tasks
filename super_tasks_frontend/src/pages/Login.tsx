@@ -34,7 +34,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 space-y-4">
+    <div className="w-full max-w-md mx-auto p-6 space-y-4">
       <h1 className="text-2xl font-bold">ログイン</h1>
       {error && <div className="text-red-600 text-sm">{error}</div>}
       <form onSubmit={onSubmit} className="space-y-3">
