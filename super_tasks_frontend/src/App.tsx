@@ -30,26 +30,26 @@ export default function App() {
   const [openQuick, setOpenQuick] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gray-900 text-gray-100">
       {/* ヘッダー（日本語ラベル＋ログイン状態で出し分け） */}
       <header className="sticky top-0 z-10 bg-gray-900/90 backdrop-blur border-b border-gray-800">
-        <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
+        <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between gap-2 sm:gap-3">
           {/* 左：ブランド（トップへ） */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             <div className="h-8 w-8 rounded-lg bg-black text-white grid place-items-center font-bold">
               S
             </div>
             <Link
               to="/"
-              className="text-xl font-extrabold tracking-tight text-white"
+              className="text-xl font-extrabold tracking-tight text-white truncate"
             >
               SuperTasks
             </Link>
           </div>
 
           {/* 右：ナビ＋クイックアクション */}
-          <div className="flex items-center gap-3">
-            {/* ナビ：モバイルでも表示される簡易版（text-xs） */}
+          <div className="flex items-center gap-3 shrink-0">
+            {/* ナビ：モバイルでも表示される簡易版（text-sm） */}
             <nav className="flex items-center gap-3 text-sm">
               <Link
                 to="/"
@@ -57,6 +57,7 @@ export default function App() {
               >
                 トップ
               </Link>
+
               {!user ? (
                 <div className="flex items-center gap-2">
                   {/* ログイン */}
@@ -64,73 +65,62 @@ export default function App() {
                     to="/login"
                     aria-label="ログイン"
                     title="ログイン"
-                    className="h-9 w-9 grid place-items-center rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60"
+                    className="h-9 w-9 grid place-items-center rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60 text-white"
                   >
                     <svg
                       viewBox="0 0 24 24"
-                      className="w-5 h-5 block"
-                      fill="none"
+                      className="w-5 h-5 block max-w-none fill-none stroke-white"
+                      strokeWidth={2}
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M10 17l5-5-5-5"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M15 12H3"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                     </svg>
                   </Link>
+
                   {/* ユーザー登録 */}
                   <Link
                     to="/signup"
                     aria-label="ユーザー登録"
                     title="ユーザー登録"
-                    className="h-9 w-9 grid place-items-center rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60"
+                    className="h-9 w-9 grid place-items-center rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60 text-white"
                   >
                     <svg
                       viewBox="0 0 24 24"
-                      className="w-5 h-5 block"
-                      fill="none"
+                      className="w-5 h-5 block max-w-none fill-none stroke-white"
+                      strokeWidth={2}
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M20 21a8 8 0 0 0-16 0"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M19 8v6"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M16 11h6"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
@@ -143,36 +133,32 @@ export default function App() {
                   <div className="hidden sm:grid place-items-center h-9 w-9 rounded-full bg-gray-700 text-white text-xs font-bold">
                     {user.email?.[0]?.toUpperCase() ?? "U"}
                   </div>
+
                   {/* ログアウト */}
                   <button
                     aria-label="ログアウト"
                     title="ログアウト"
                     onClick={signOut}
-                    className="h-9 w-9 grid place-items-center rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60 flex items-center justify-center leading-none"
+                    className="h-9 w-9 grid place-items-center rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60 text-white p-0"
                   >
                     <svg
                       viewBox="0 0 24 24"
-                      className="w-5 h-5 block"
-                      fill="none"
+                      className="w-5 h-5 block max-w-none fill-none stroke-white"
+                      strokeWidth={2}
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M16 17l5-5-5-5"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M21 12H9"
-                        stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
@@ -187,19 +173,18 @@ export default function App() {
               aria-label="どの記録を登録しますか？"
               title="どの記録を登録しますか？"
               onClick={() => setOpenQuick(true)}
-              className="h-10 w-10 rounded-full bg-gray-800 border border-gray-700 grid place-items-center hover:bg-gray-700 active:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/60 flex items-center justify-center leading-none"
+              className="h-10 w-10 grid place-items-center rounded-full border border-gray-700 bg-gray-800
+             hover:bg-gray-700 active:opacity-80 focus:outline-none focus-visible:ring-2
+             focus-visible:ring-brand-secondary/60 text-white p-0"
             >
-              {/* 稲妻アイコン：stroke系で視認性UP・サイズ揃え */}
               <svg
-                className="h-5 w-5 text-white"
                 viewBox="0 0 24 24"
-                fill="none"
+                className="h-5 w-5 block max-w-none fill-none stroke-white"
+                strokeWidth={2}
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M13 3L4 14h6l-1 7 9-11h-6l1-7z"
-                  stroke="currentColor"
-                  strokeWidth="2"
+                  d="M13 2L3 14h7l-1 8 12-16h-7l1-6z"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />

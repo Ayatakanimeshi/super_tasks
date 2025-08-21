@@ -125,7 +125,7 @@ export default function Dashboard() {
   }, [mentorLogsQ.data]);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 space-y-6">
+    <div className="w-full mx-auto max-w-5xl px-4 py-6 space-y-6">
       {/* タイトルだけ（ヘッダーやクイックモーダルは App.tsx 側で制御） */}
       <div className="flex items-end justify-between">
         <h1 className="text-2xl font-extrabold tracking-tight text-white">
