@@ -1,13 +1,17 @@
 services:
   - type: web
-    name: supertasks-api
+    name: super_tasks_api
     env: ruby
     plan: free
     rootDir: ./super_tasks_backend
     autoDeploy: true
     buildCommand: |
       bundle install
-      bundle exec rails db:prepare
+      echo "RAILS_ENV=$RAILS_ENV"
+      if [ -z "$DATABASE_URL" ]; then
+        echo "ERROR: DATABASE_URL is missing during build"; exit 1;
+      fi
+      RAILS_ENV=production bundle exec rails db:prepare
     startCommand: bundle exec puma -C config/puma.rb
     envVars:
       - key: RAILS_ENV
@@ -15,6 +19,8 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: FRONTEND_ORIGIN
+        sync: false
+      - key: SECRET_KEY_BASE
         sync: false
       - key: RAILS_MASTER_KEY
         sync: false
