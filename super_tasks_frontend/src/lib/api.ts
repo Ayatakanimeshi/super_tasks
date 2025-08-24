@@ -1,10 +1,26 @@
+// /src/lib/api.ts
 import axios from "axios";
 
-const BASE_URL = "/api"; // 開発時は Vite の devServer で /api にプロキシ or 同一オリジン
+// 本番（Cloudflare Pages）では VITE_API_BASE_URL を使用
+// 開発（vite dev）は /api（Vite の devServer プロキシ）を使用
+const RAW_BASE = import.meta.env.PROD
+  ? import.meta.env.VITE_API_BASE_URL
+  : "/api";
+
+// 末尾スラッシュを1つに正規化（"csrf" など相対パスと安全に結合するため）
+const BASE_URL = String(RAW_BASE || "/api").replace(/\/+$/, "") + "/";
+
+// 本番で未設定なら分かりやすく警告（Pages の環境変数入れ忘れ防止）
+if (import.meta.env.PROD && !import.meta.env.VITE_API_BASE_URL) {
+  // eslint-disable-next-line no-console
+  console.error(
+    "[api] VITE_API_BASE_URL is missing in production. Set it to your Render API URL."
+  );
+}
 
 export const api = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true,
+  withCredentials: true, // Cookie を送受信（CSRF/セッション用）
   timeout: 10000,
 });
 
