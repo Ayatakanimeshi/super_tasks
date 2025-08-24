@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: super_tasks-api
+    env: ruby
+    plan: free
+    rootDir: ./super_tasks/super_tasks_backend
+    buildCommand: |
+      bundle install
+      bundle exec rails db:prepare
+    startCommand: bundle exec puma -C config/puma.rb
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # 値はGUIで安全に入力（このファイルには書かない）
+      - key: RAILS_MASTER_KEY
+        sync: false # credentials を使っている場合のみGUIで入力
