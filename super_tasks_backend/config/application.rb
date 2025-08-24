@@ -31,7 +31,8 @@ module SuperTasksBackend
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore,
       key: "_super_tasks_session",
-      secure: Rails.env.production?,
-      same_site: :lax
+      secure: true,
+      httponly: true,
+      same_site: :none
   end
 end

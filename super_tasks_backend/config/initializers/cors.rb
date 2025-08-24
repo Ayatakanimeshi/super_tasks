@@ -7,11 +7,11 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'http://localhost:5173'  # Reactのポート
-
+    origins ENV.fetch('FRONTEND_ORIGIN')  # 例: https://your-app.pages.dev
     resource '*',
       headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      expose: ['X-CSRF-Token'],
+      methods: %i[get post put patch delete options head],
       credentials: true
   end
 end

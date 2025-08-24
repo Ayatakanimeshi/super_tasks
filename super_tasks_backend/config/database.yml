@@ -78,7 +78,8 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: super_tasks_backend_production
-  username: super_tasks_backend
-  password: <%= ENV["SUPER_TASKS_BACKEND_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+  prepared_statements: false # ← transaction mode(6543)のとき必須
+  variables:
+    statement_timeout: 15000

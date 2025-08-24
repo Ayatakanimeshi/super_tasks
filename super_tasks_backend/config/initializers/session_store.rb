@@ -1,5 +1,5 @@
 Rails.application.config.session_store :cookie_store,
   key: '_super_tasks_session',
-  secure: Rails.env.production?,
+  secure: true,
   httponly: true, 
-  same_site: :lax
+  same_site: :none
