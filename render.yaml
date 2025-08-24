@@ -1,23 +1,24 @@
 services:
   - type: web
-    name: super_tasks-api
+    name: supertasks-api
     env: ruby
     plan: free
-    rootDir: . # ← ルートに固定（ここが原因にならないようにする）
+    rootDir: ./super_tasks_backend
+    autoDeploy: true
     buildCommand: |
-      set -e
-      ls -la
-      cd super_tasks/super_tasks_backend
-      ls -la
       bundle install
       bundle exec rails db:prepare
-    startCommand: |
-      cd super_tasks/super_tasks_backend
-      bundle exec puma -C config/puma.rb
+    startCommand: bundle exec puma -C config/puma.rb
     envVars:
       - key: RAILS_ENV
         value: production
       - key: DATABASE_URL
-        sync: false # 値はGUIで入力（このファイルには書かない）
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
       - key: RAILS_MASTER_KEY
-        sync: false # credentialsを使う場合のみGUIで入力
+        sync: false
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
